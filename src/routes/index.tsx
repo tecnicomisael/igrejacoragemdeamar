@@ -66,7 +66,7 @@ function Home() {
           >
             <div>
               <div className="text-[10px] uppercase tracking-widest text-gold">Próximo culto</div>
-              <div className="mt-1 font-display text-lg">Domingo • 18h30</div>
+              <div className="mt-1 font-display text-lg">Domingo • 19h</div>
               <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
                 <MapPin className="h-3 w-3" /> Templo Sede
               </div>
