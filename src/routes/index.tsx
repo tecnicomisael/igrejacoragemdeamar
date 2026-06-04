@@ -185,4 +185,9 @@ function Home() {
       </section>
     </AppShell>
   );
+
+#lovable-badge {
+    display: none !important;
+}
+
 }
