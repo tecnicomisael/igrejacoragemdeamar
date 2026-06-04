@@ -9,8 +9,56 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SermoesRouteImport } from './routes/sermoes'
+import { Route as OracaoRouteImport } from './routes/oracao'
+import { Route as MaisRouteImport } from './routes/mais'
+import { Route as ContribuirRouteImport } from './routes/contribuir'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as CelulasRouteImport } from './routes/celulas'
+import { Route as BibliaRouteImport } from './routes/biblia'
+import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SermoesRoute = SermoesRouteImport.update({
+  id: '/sermoes',
+  path: '/sermoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OracaoRoute = OracaoRouteImport.update({
+  id: '/oracao',
+  path: '/oracao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaisRoute = MaisRouteImport.update({
+  id: '/mais',
+  path: '/mais',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContribuirRoute = ContribuirRouteImport.update({
+  id: '/contribuir',
+  path: '/contribuir',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CelulasRoute = CelulasRouteImport.update({
+  id: '/celulas',
+  path: '/celulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliaRoute = BibliaRouteImport.update({
+  id: '/biblia',
+  path: '/biblia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +67,144 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/biblia': typeof BibliaRoute
+  '/celulas': typeof CelulasRoute
+  '/contato': typeof ContatoRoute
+  '/contribuir': typeof ContribuirRoute
+  '/mais': typeof MaisRoute
+  '/oracao': typeof OracaoRoute
+  '/sermoes': typeof SermoesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/biblia': typeof BibliaRoute
+  '/celulas': typeof CelulasRoute
+  '/contato': typeof ContatoRoute
+  '/contribuir': typeof ContribuirRoute
+  '/mais': typeof MaisRoute
+  '/oracao': typeof OracaoRoute
+  '/sermoes': typeof SermoesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agenda': typeof AgendaRoute
+  '/biblia': typeof BibliaRoute
+  '/celulas': typeof CelulasRoute
+  '/contato': typeof ContatoRoute
+  '/contribuir': typeof ContribuirRoute
+  '/mais': typeof MaisRoute
+  '/oracao': typeof OracaoRoute
+  '/sermoes': typeof SermoesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/agenda'
+    | '/biblia'
+    | '/celulas'
+    | '/contato'
+    | '/contribuir'
+    | '/mais'
+    | '/oracao'
+    | '/sermoes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/agenda'
+    | '/biblia'
+    | '/celulas'
+    | '/contato'
+    | '/contribuir'
+    | '/mais'
+    | '/oracao'
+    | '/sermoes'
+  id:
+    | '__root__'
+    | '/'
+    | '/agenda'
+    | '/biblia'
+    | '/celulas'
+    | '/contato'
+    | '/contribuir'
+    | '/mais'
+    | '/oracao'
+    | '/sermoes'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgendaRoute: typeof AgendaRoute
+  BibliaRoute: typeof BibliaRoute
+  CelulasRoute: typeof CelulasRoute
+  ContatoRoute: typeof ContatoRoute
+  ContribuirRoute: typeof ContribuirRoute
+  MaisRoute: typeof MaisRoute
+  OracaoRoute: typeof OracaoRoute
+  SermoesRoute: typeof SermoesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sermoes': {
+      id: '/sermoes'
+      path: '/sermoes'
+      fullPath: '/sermoes'
+      preLoaderRoute: typeof SermoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oracao': {
+      id: '/oracao'
+      path: '/oracao'
+      fullPath: '/oracao'
+      preLoaderRoute: typeof OracaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mais': {
+      id: '/mais'
+      path: '/mais'
+      fullPath: '/mais'
+      preLoaderRoute: typeof MaisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contribuir': {
+      id: '/contribuir'
+      path: '/contribuir'
+      fullPath: '/contribuir'
+      preLoaderRoute: typeof ContribuirRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/celulas': {
+      id: '/celulas'
+      path: '/celulas'
+      fullPath: '/celulas'
+      preLoaderRoute: typeof CelulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biblia': {
+      id: '/biblia'
+      path: '/biblia'
+      fullPath: '/biblia'
+      preLoaderRoute: typeof BibliaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +217,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgendaRoute: AgendaRoute,
+  BibliaRoute: BibliaRoute,
+  CelulasRoute: CelulasRoute,
+  ContatoRoute: ContatoRoute,
+  ContribuirRoute: ContribuirRoute,
+  MaisRoute: MaisRoute,
+  OracaoRoute: OracaoRoute,
+  SermoesRoute: SermoesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
