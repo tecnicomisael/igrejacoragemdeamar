@@ -129,7 +129,7 @@ function Home() {
             </div>
             <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
               <span className="rounded-full bg-background/70 px-2.5 py-1 text-[10px] uppercase tracking-widest text-gold backdrop-blur">
-                Série • Coragem
+                Culto da família
               </span>
               <span className="rounded-full bg-background/70 px-2 py-1 text-[10px] text-muted-foreground backdrop-blur">
                 42 min
@@ -138,7 +138,7 @@ function Home() {
           </div>
           <div className="p-4">
             <h3 className="font-display text-lg leading-tight">A coragem que nasce do amor</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Pr. Lucas Andrade • 02 Jun 2026</p>
+            <p className="mt-1 text-xs text-muted-foreground">Pr. Pedro Costa • 02 Jun 2026</p>
           </div>
         </Link>
       </section>
