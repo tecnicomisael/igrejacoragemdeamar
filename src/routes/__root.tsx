@@ -86,6 +86,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: "Vivencie a fé todos os dias com nosso app oficial.",
       },
       { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "Igreja Coragem de Amar" },
+      { name: "description", content: "Onde a fé encontra coragem para amar." },
+      { property: "og:description", content: "Onde a fé encontra coragem para amar." },
+      { name: "twitter:description", content: "Onde a fé encontra coragem para amar." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5a2a8761-dace-4b41-8dd9-f6a13e34ecdc/id-preview-74751bf8--12d3606a-b874-4554-9b59-a7fba062dc09.lovable.app-1780597272636.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/5a2a8761-dace-4b41-8dd9-f6a13e34ecdc/id-preview-74751bf8--12d3606a-b874-4554-9b59-a7fba062dc09.lovable.app-1780597272636.png" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
