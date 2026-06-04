@@ -13,14 +13,14 @@ export const Route = createFileRoute("/sermoes")({
   component: Sermoes,
 });
 
-const series = ["Todos", "Coragem", "Família", "Esperança", "Discipulado"];
+const series = ["Todos", "Culto da família", "Coragem", "Família", "Esperança", "Discipulado"];
 
 const sermons = [
-  { title: "A coragem que nasce do amor", pastor: "Pr. Lucas Andrade", date: "02 Jun", dur: "42 min", series: "Coragem" },
-  { title: "Quando o silêncio fala", pastor: "Pr. Lucas Andrade", date: "26 Mai", dur: "38 min", series: "Esperança" },
+  { title: "A coragem que nasce do amor", pastor: "Pr. Pedro Costa", date: "02 Jun", dur: "42 min", series: "Culto da família" },
+  { title: "Quando o silêncio fala", pastor: "Pr. Pedro Costa", date: "26 Mai", dur: "38 min", series: "Esperança" },
   { title: "Famílias que oram juntas", pastor: "Pra. Marta Lima", date: "19 Mai", dur: "45 min", series: "Família" },
   { title: "Discípulos no cotidiano", pastor: "Pr. Tiago Reis", date: "12 Mai", dur: "36 min", series: "Discipulado" },
-  { title: "O amor que vence o medo", pastor: "Pr. Lucas Andrade", date: "05 Mai", dur: "40 min", series: "Coragem" },
+  { title: "O amor que vence o medo", pastor: "Pr. Pedro Costa", date: "05 Mai", dur: "40 min", series: "Coragem" },
 ];
 
 function Sermoes() {
@@ -75,7 +75,7 @@ function Sermoes() {
           </div>
           <div className="p-4">
             <h3 className="font-display text-lg">A coragem que nasce do amor</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Pr. Lucas Andrade • Série Coragem</p>
+            <p className="mt-1 text-xs text-muted-foreground">Pr. Pedro Costa • Culto da família</p>
           </div>
         </article>
       </section>
