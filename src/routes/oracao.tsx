@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { Heart, Send, Lock } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export const Route = createFileRoute("/oracao")({
   head: () => ({
@@ -13,7 +13,9 @@ export const Route = createFileRoute("/oracao")({
   component: Oracao,
 });
 
-const wall = [
+type Prayer = { name: string; text: string; count: number };
+
+const initialWall: Prayer[] = [
   { name: "Ana", text: "Orem pela saúde do meu pai. Deus é bom.", count: 38 },
   { name: "Anônimo", text: "Direção em uma decisão importante.", count: 22 },
   { name: "Marcos", text: "Agradecer por novo emprego!", count: 64 },
@@ -23,6 +25,24 @@ const wall = [
 function Oracao() {
   const [sent, setSent] = useState(false);
   const [anon, setAnon] = useState(false);
+  const [wall, setWall] = useState<Prayer[]>(initialWall);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const text = textRef.current?.value.trim() ?? "";
+    if (!text) return;
+    const name = anon ? "Anônimo" : (nameRef.current?.value.trim() || "Anônimo");
+    setWall((prev) => [{ name, text, count: 0 }, ...prev]);
+    setSent(true);
+    setTimeout(() => setSent(false), 2500);
+    (e.target as HTMLFormElement).reset();
+  };
+
+  const handlePray = (idx: number) => {
+    setWall((prev) => prev.map((p, i) => (i === idx ? { ...p, count: p.count + 1 } : p)));
+  };
 
   return (
     <AppShell>
@@ -36,20 +56,17 @@ function Oracao() {
 
       <section className="px-5 mt-6">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSent(true);
-            setTimeout(() => setSent(false), 2500);
-            (e.target as HTMLFormElement).reset();
-          }}
+          onSubmit={handleSubmit}
           className="rounded-2xl border border-border bg-card p-4 shadow-card space-y-3"
         >
           <input
+            ref={nameRef}
             placeholder="Seu nome (opcional)"
             disabled={anon}
             className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm outline-none focus:border-gold disabled:opacity-50"
           />
           <textarea
+            ref={textRef}
             required
             rows={4}
             placeholder="Compartilhe seu pedido…"
@@ -86,7 +103,10 @@ function Oracao() {
             <article key={i} className="rounded-2xl border border-border bg-card p-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-gold">{p.name}</span>
-                <button className="inline-flex items-center gap-1 rounded-full bg-gold/10 px-2.5 py-1 text-[11px] text-gold">
+                <button
+                  onClick={() => handlePray(i)}
+                  className="inline-flex items-center gap-1 rounded-full bg-gold/10 px-2.5 py-1 text-[11px] text-gold"
+                >
                   <Heart className="h-3 w-3 fill-current" /> {p.count} oraram
                 </button>
               </div>
