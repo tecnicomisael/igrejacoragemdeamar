@@ -14,7 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      prayer_intercessions: {
+        Row: {
+          created_at: string
+          device_id: string
+          id: string
+          prayer_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          id?: string
+          prayer_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          id?: string
+          prayer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prayer_intercessions_prayer_id_fkey"
+            columns: ["prayer_id"]
+            isOneToOne: false
+            referencedRelation: "prayers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prayers: {
+        Row: {
+          anonymous: boolean
+          count: number
+          created_at: string
+          id: string
+          name: string
+          text: string
+        }
+        Insert: {
+          anonymous?: boolean
+          count?: number
+          created_at?: string
+          id?: string
+          name?: string
+          text: string
+        }
+        Update: {
+          anonymous?: boolean
+          count?: number
+          created_at?: string
+          id?: string
+          name?: string
+          text?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
