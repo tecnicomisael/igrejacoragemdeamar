@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { requestAdminAccess, getMyAdminStatus } from "@/lib/admin.functions";
 import { AppShell } from "@/components/AppShell";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
