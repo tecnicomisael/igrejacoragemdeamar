@@ -19,6 +19,18 @@ type Tab = "mural" | "contatos";
 type Prayer = { id: string; name: string; text: string; count: number; created_at: string };
 type ContactMsg = { id: string; name: string; email: string; message: string; created_at: string };
 
+async function withTimeout<T>(promise: PromiseLike<T>, ms = 7000): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error("Tempo limite ao carregar dados")), ms);
+  });
+  try {
+    return await Promise.race([Promise.resolve(promise), timeout]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
 function AdminPanel() {
   const navigate = useNavigate();
   const { role } = Route.useRouteContext();
@@ -29,21 +41,30 @@ function AdminPanel() {
 
   const load = async () => {
     setLoading(true);
-    const [pr, ct] = await Promise.all([
-      supabase
-        .from("prayers")
-        .select("id, name, text, count, created_at")
-        .order("created_at", { ascending: false })
-        .limit(200),
-      supabase
-        .from("contact_messages")
-        .select("id, name, email, message, created_at")
-        .order("created_at", { ascending: false })
-        .limit(200),
-    ]);
-    if (pr.data) setPrayers(pr.data as Prayer[]);
-    if (ct.data) setContacts(ct.data as ContactMsg[]);
-    setLoading(false);
+    try {
+      const [pr, ct] = await Promise.all([
+        withTimeout(
+          supabase
+            .from("prayers")
+            .select("id, name, text, count, created_at")
+            .order("created_at", { ascending: false })
+            .limit(100),
+        ),
+        withTimeout(
+          supabase
+            .from("contact_messages")
+            .select("id, name, email, message, created_at")
+            .order("created_at", { ascending: false })
+            .limit(100),
+        ),
+      ]);
+      if (pr.data) setPrayers(pr.data as Prayer[]);
+      if (ct.data) setContacts(ct.data as ContactMsg[]);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
