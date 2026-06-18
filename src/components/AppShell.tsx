@@ -16,6 +16,10 @@ const tabs = [
 export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const [isAdmin, setIsAdmin] = useState(false);
+  const { t } = useSiteContent();
+  const logoUrl = t("global", "brand_logo") || defaultLogo.url;
+  const brandKicker = t("global", "brand_kicker");
+  const brandName = t("global", "brand_name");
 
   useEffect(() => {
     let active = true;
@@ -47,10 +51,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-border/60">
         <div className="mx-auto max-w-md px-5 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={logo.url} alt="Igreja Coragem de Amar" className="h-9 w-auto" />
+            <img src={logoUrl} alt={brandName} className="h-9 w-auto" />
             <div className="leading-tight">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-gold/80">Igreja</div>
-              <div className="font-display text-base text-foreground">Coragem de Amar</div>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-gold/80">{brandKicker}</div>
+              <div className="font-display text-base text-foreground">{brandName}</div>
             </div>
           </Link>
           {isAdmin && (
