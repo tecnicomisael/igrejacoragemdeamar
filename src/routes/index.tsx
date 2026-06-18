@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
-import logo from "@/assets/logo-coragem.png.asset.json";
+import defaultLogo from "@/assets/logo-coragem.png.asset.json";
+import { useSiteContent, renderHighlighted } from "@/lib/use-content";
 import {
   Calendar,
   PlayCircle,
@@ -26,11 +27,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const verse = {
-  text: "Acima de tudo, porém, revistam-se do amor, que é o vínculo perfeito.",
-  ref: "Colossenses 3:14",
-};
-
 const quickActions = [
   { to: "/sermoes", label: "Sermões", icon: PlayCircle },
   { to: "/agenda", label: "Agenda", icon: Calendar },
@@ -41,6 +37,8 @@ const quickActions = [
 ];
 
 function Home() {
+  const { t } = useSiteContent();
+  const heroLogo = t("home", "hero_logo") || defaultLogo.url;
   return (
     <AppShell>
       {/* Hero */}
