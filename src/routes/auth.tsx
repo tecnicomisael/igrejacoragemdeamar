@@ -103,8 +103,13 @@ function AuthPage() {
 
     if (signErr) {
       setLoading(false);
-      if (signErr.message?.toLowerCase().includes("registered")) {
+      const msg = signErr.message?.toLowerCase() ?? "";
+      if (msg.includes("registered")) {
         setError("Este e-mail já está cadastrado. Faça login.");
+      } else if (msg.includes("weak") || msg.includes("pwned") || msg.includes("known")) {
+        setError(
+          "Essa senha é muito comum e já apareceu em vazamentos públicos. Escolha uma senha mais forte — combine letras maiúsculas e minúsculas, números e símbolos (ex: Igreja@CoragemDeAmar2026!).",
+        );
       } else {
         setError(signErr.message ?? "Erro no cadastro.");
       }
