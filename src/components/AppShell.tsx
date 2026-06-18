@@ -1,8 +1,9 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Calendar, Heart, BookOpen, Menu, ShieldCheck } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import logo from "@/assets/logo-coragem.png.asset.json";
+import defaultLogo from "@/assets/logo-coragem.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
+import { useSiteContent } from "@/lib/use-content";
 
 const tabs = [
   { to: "/", label: "Início", icon: Home },
