@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { Users, MapPin, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/celulas")({
@@ -20,13 +21,14 @@ const cells = [
 ];
 
 function Celulas() {
+  const { t } = useSiteContent();
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Comunhão</p>
-        <h1 className="mt-1 font-display text-3xl">Células</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("celulas", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("celulas", "title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Pequenos grupos que se reúnem para crescer juntos em fé e amizade.
+          {t("celulas", "subtitle")}
         </p>
       </section>
 
@@ -47,7 +49,7 @@ function Celulas() {
               </div>
             </div>
             <button className="mt-3 w-full rounded-full bg-gradient-gold py-2.5 text-sm font-semibold text-primary-foreground shadow-gold">
-              Quero participar
+              {t("celulas", "cta")}
             </button>
           </article>
         ))}

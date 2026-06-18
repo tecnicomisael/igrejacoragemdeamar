@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { BookOpen, Search, Bookmark, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
@@ -24,6 +25,7 @@ type BibleResponse = {
 };
 
 function Biblia() {
+  const { t } = useSiteContent();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BibleResponse | null>(null);
@@ -63,10 +65,10 @@ function Biblia() {
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Leitura</p>
-        <h1 className="mt-1 font-display text-3xl">Bíblia Sagrada</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("biblia", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("biblia", "title")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Tradução João Ferreira de Almeida. Digite uma referência (ex.: João 3:16).
+          {t("biblia", "subtitle")}
         </p>
 
         <form

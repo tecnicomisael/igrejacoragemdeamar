@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import {
   BookOpen,
   HandCoins,
@@ -31,6 +32,12 @@ const items = [
 ];
 
 function Mais() {
+  const { t } = useSiteContent();
+  const social = [
+    { icon: Instagram, label: "Instagram", url: t("mais", "instagram_url") },
+    { icon: Youtube, label: "YouTube", url: t("mais", "youtube_url") },
+    { icon: MapPin, label: "Como chegar", url: t("mais", "map_url") },
+  ];
   return (
     <AppShell>
       <section className="px-5 pt-6">
@@ -60,14 +67,12 @@ function Mais() {
       <section className="px-5 mt-7">
         <h2 className="font-display text-lg mb-3">Conecte-se</h2>
         <div className="grid grid-cols-3 gap-3">
-          {[
-            { icon: Instagram, label: "Instagram" },
-            { icon: Youtube, label: "YouTube" },
-            { icon: MapPin, label: "Como chegar" },
-          ].map(({ icon: Icon, label }) => (
+          {social.map(({ icon: Icon, label, url }) => (
             <a
               key={label}
-              href="#"
+              href={url || "#"}
+              target={url && url !== "#" ? "_blank" : undefined}
+              rel="noreferrer"
               className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4"
             >
               <Icon className="h-5 w-5 text-gold" />
@@ -99,7 +104,7 @@ function Mais() {
       </section>
 
       <p className="mt-8 text-center text-[11px] text-muted-foreground">
-        Igreja Coragem de Amar • v1.0
+        {t("mais", "footer")}
       </p>
     </AppShell>
   );

@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { useSiteContent } from "@/lib/use-content";
+import { Phone, MapPin, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contato")({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/contato")({
 });
 
 function Contato() {
+  const { t } = useSiteContent();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,36 +44,40 @@ function Contato() {
     setTimeout(() => setSent(false), 3500);
   };
 
+  const phone = t("contato", "phone");
+  const address = t("contato", "address");
+
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Fale conosco</p>
-        <h1 className="mt-1 font-display text-3xl">Contato</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("contato", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("contato", "title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Estamos aqui para ouvir, orar e caminhar com você.
+          {t("contato", "subtitle")}
         </p>
       </section>
 
       <section className="px-5 mt-6 space-y-3">
         {[
-          { icon: MessageCircle, label: "WhatsApp", value: "(11) 99999-0000" },
-          { icon: Phone, label: "Telefone", value: "(11) 3000-0000" },
-          { icon: Mail, label: "E-mail", value: "contato@coragemdeamar.org" },
-          { icon: MapPin, label: "Endereço", value: "Rua da Esperança, 100 — Centro" },
-        ].map(({ icon: Icon, label, value }) => (
-          <div
-            key={label}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
-          >
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-gold text-primary-foreground shadow-gold">
-              <Icon className="h-5 w-5" />
-            </span>
-            <div>
-              <div className="text-xs text-muted-foreground">{label}</div>
-              <div className="font-medium">{value}</div>
+          phone && { icon: Phone, label: "Telefone", value: phone },
+          address && { icon: MapPin, label: "Endereço", value: address },
+        ].filter(Boolean).map((item) => {
+          const { icon: Icon, label, value } = item as { icon: typeof Phone; label: string; value: string };
+          return (
+            <div
+              key={label}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-gold text-primary-foreground shadow-gold">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div>
+                <div className="text-xs text-muted-foreground">{label}</div>
+                <div className="font-medium">{value}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="px-5 mt-6">

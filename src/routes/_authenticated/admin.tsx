@@ -1,8 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
-import { Trash2, LogOut, Loader2, MessageSquare, Heart, ShieldCheck } from "lucide-react";
+import { Trash2, LogOut, Loader2, MessageSquare, Heart, ShieldCheck, FileEdit, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -85,8 +85,24 @@ function AdminPanel() {
           </button>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          Gerencie o conteúdo público do site. Mais áreas serão liberadas em breve.
+          Gerencie o conteúdo público do site.
         </p>
+      </section>
+
+      <section className="px-5 mt-5">
+        <Link
+          to="/admin/conteudo"
+          className="flex items-center gap-3 rounded-2xl border border-gold/40 bg-gradient-hero p-4 shadow-card"
+        >
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-gold text-primary-foreground shadow-gold">
+            <FileEdit className="h-5 w-5" />
+          </span>
+          <div className="flex-1">
+            <div className="font-display text-base">Editar conteúdo do site</div>
+            <div className="text-xs text-muted-foreground">Textos e imagens de todas as páginas</div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>
       </section>
 
       <section className="px-5 mt-5">
