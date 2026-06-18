@@ -25,19 +25,21 @@ const sermons = [
 ];
 
 function Sermoes() {
+  const { t } = useSiteContent();
   const [active, setActive] = useState("Todos");
   const list = active === "Todos" ? sermons : sermons.filter((s) => s.series === active);
+  const featuredCover = t("sermoes", "featured_cover");
 
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Palavra</p>
-        <h1 className="mt-1 font-display text-3xl">Sermões</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("sermoes", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("sermoes", "title")}</h1>
 
         <div className="mt-4 flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5">
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
-            placeholder="Buscar mensagem ou pregador"
+            placeholder={t("sermoes", "search_placeholder")}
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
           />
         </div>
@@ -64,8 +66,11 @@ function Sermoes() {
       {/* Featured */}
       <section className="px-5 mt-5">
         <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-          <div className="relative h-44 bg-gradient-hero">
-            <div className="absolute inset-0 grid place-items-center">
+          <div
+            className="relative h-44 bg-gradient-hero bg-cover bg-center"
+            style={featuredCover ? { backgroundImage: `url(${featuredCover})` } : undefined}
+          >
+            <div className="absolute inset-0 grid place-items-center bg-black/30">
               <span className="grid h-14 w-14 place-items-center rounded-full bg-gradient-gold text-primary-foreground shadow-gold">
                 <PlayCircle className="h-7 w-7" />
               </span>
@@ -75,8 +80,8 @@ function Sermoes() {
             </span>
           </div>
           <div className="p-4">
-            <h3 className="font-display text-lg">A coragem que nasce do amor</h3>
-            <p className="mt-1 text-xs text-muted-foreground">Pr. Pedro Costa • Culto da família</p>
+            <h3 className="font-display text-lg">{t("sermoes", "featured_title")}</h3>
+            <p className="mt-1 text-xs text-muted-foreground">{t("sermoes", "featured_meta")}</p>
           </div>
         </article>
       </section>

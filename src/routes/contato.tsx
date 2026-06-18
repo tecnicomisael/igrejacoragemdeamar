@@ -16,6 +16,7 @@ export const Route = createFileRoute("/contato")({
 });
 
 function Contato() {
+  const { t } = useSiteContent();
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,13 +44,16 @@ function Contato() {
     setTimeout(() => setSent(false), 3500);
   };
 
+  const phone = t("contato", "phone");
+  const address = t("contato", "address");
+
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Fale conosco</p>
-        <h1 className="mt-1 font-display text-3xl">Contato</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("contato", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("contato", "title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Estamos aqui para ouvir, orar e caminhar com você.
+          {t("contato", "subtitle")}
         </p>
       </section>
 

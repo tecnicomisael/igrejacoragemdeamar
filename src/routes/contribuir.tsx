@@ -15,16 +15,17 @@ export const Route = createFileRoute("/contribuir")({
 });
 
 function Contribuir() {
+  const { t } = useSiteContent();
   const [copied, setCopied] = useState(false);
-  const pix = "contribuicao@coragemdeamar.org";
+  const pix = t("contribuir", "pix_key");
 
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Generosidade</p>
-        <h1 className="mt-1 font-display text-3xl">Dízimos & Ofertas</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("contribuir", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("contribuir", "title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          “Cada um dê conforme determinou em seu coração, com alegria.” — 2 Co 9:7
+          {t("contribuir", "subtitle")}
         </p>
       </section>
 
@@ -34,7 +35,7 @@ function Contribuir() {
             <QrCode className="h-6 w-6" />
           </span>
           <h2 className="mt-3 font-display text-2xl">Pix</h2>
-          <p className="mt-1 text-xs text-muted-foreground">Chave Pix (e-mail)</p>
+          <p className="mt-1 text-xs text-muted-foreground">{t("contribuir", "pix_key_label")}</p>
           <div className="mt-3 flex items-center justify-between gap-2 rounded-xl border border-border bg-background/50 px-4 py-3 text-sm">
             <span className="truncate">{pix}</span>
             <button
