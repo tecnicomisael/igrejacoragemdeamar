@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_signup_requests: {
+        Row: {
+          approval_token: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          processed_at: string | null
+          processed_by: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          status: string
+          user_id: string
+        }
+        Insert: {
+          approval_token?: string
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          status?: string
+          user_id: string
+        }
+        Update: {
+          approval_token?: string
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          requested_role?: Database["public"]["Enums"]["app_role"]
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+        }
+        Relationships: []
+      }
       prayer_intercessions: {
         Row: {
           created_at: string
@@ -70,15 +133,46 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "pastor" | "midia"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -205,6 +299,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["pastor", "midia"],
+    },
   },
 } as const
