@@ -18,6 +18,18 @@ export const Route = createFileRoute("/_authenticated/admin/conteudo")({
 
 const SIGNED_EXPIRES = 60 * 60 * 24 * 365 * 50; // ~50 years
 
+async function withTimeout<T>(promise: PromiseLike<T>, ms = 7000): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error("Tempo limite ao carregar conteúdo")), ms);
+  });
+  try {
+    return await Promise.race([Promise.resolve(promise), timeout]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
 function AdminContent() {
   const navigate = useNavigate();
   const invalidate = useInvalidateSiteContent();
@@ -31,16 +43,23 @@ function AdminContent() {
     let active = true;
     (async () => {
       setLoading(true);
-      const { data } = await supabase
-        .from("site_content")
-        .select("page, key, value");
-      if (!active) return;
-      const map: Record<string, string> = {};
-      for (const row of data ?? []) {
-        map[`${row.page}::${row.key}`] = row.value as string;
+      try {
+        const { data } = await withTimeout(
+          supabase
+            .from("site_content")
+            .select("page, key, value"),
+        );
+        if (!active) return;
+        const map: Record<string, string> = {};
+        for (const row of data ?? []) {
+          map[`${row.page}::${row.key}`] = row.value as string;
+        }
+        setValues(map);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        if (active) setLoading(false);
       }
-      setValues(map);
-      setLoading(false);
     })();
     return () => {
       active = false;
