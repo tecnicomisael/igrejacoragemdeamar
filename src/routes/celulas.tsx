@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { Users, MapPin, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/celulas")({

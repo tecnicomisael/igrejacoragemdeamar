@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { Copy, QrCode, CreditCard, Building2, HandCoins } from "lucide-react";
 import { useState } from "react";
 

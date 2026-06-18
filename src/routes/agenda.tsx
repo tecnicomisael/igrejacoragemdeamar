@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { Calendar, Clock, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/agenda")({
@@ -22,13 +23,14 @@ const events = [
 ];
 
 function Agenda() {
+  const { t } = useSiteContent();
   return (
     <AppShell>
       <section className="px-5 pt-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Programação</p>
-        <h1 className="mt-1 font-display text-3xl">Agenda</h1>
+        <p className="text-xs uppercase tracking-[0.25em] text-gold/80">{t("agenda", "kicker")}</p>
+        <h1 className="mt-1 font-display text-3xl">{t("agenda", "title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Junte-se a nós nos cultos e eventos desta semana.
+          {t("agenda", "subtitle")}
         </p>
       </section>
 
@@ -62,10 +64,10 @@ function Agenda() {
         <div className="rounded-2xl border border-gold/30 bg-card p-5 text-center">
           <Calendar className="mx-auto h-6 w-6 text-gold" />
           <p className="mt-2 text-sm text-muted-foreground">
-            Quer receber lembretes dos próximos eventos?
+            {t("agenda", "notify_text")}
           </p>
           <button className="mt-3 rounded-full bg-gradient-gold px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-gold">
-            Ativar notificações
+            {t("agenda", "notify_button")}
           </button>
         </div>
       </section>

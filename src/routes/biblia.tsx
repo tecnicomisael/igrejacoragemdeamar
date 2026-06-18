@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { useSiteContent } from "@/lib/use-content";
 import { BookOpen, Search, Bookmark, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
