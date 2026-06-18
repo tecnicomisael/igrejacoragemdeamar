@@ -4,20 +4,20 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   beforeLoad: async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) {
+    const { data, error } = await supabase.auth.getSession();
+    const user = data.session?.user;
+    if (error || !user) {
       throw redirect({ to: "/auth" });
     }
-    // Check admin role
     const { data: role } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", data.user.id)
+      .eq("user_id", user.id)
       .maybeSingle();
     if (!role) {
       throw redirect({ to: "/auth" });
     }
-    return { user: data.user, role: role.role };
+    return { user, role: role.role };
   },
   component: () => <Outlet />,
 });

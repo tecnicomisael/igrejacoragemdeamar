@@ -35,8 +35,8 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   const refresh = async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session?.user) {
       setSignedIn(false);
       setStatus(null);
       setChecking(false);
