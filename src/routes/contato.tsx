@@ -59,11 +59,11 @@ function Contato() {
 
       <section className="px-5 mt-6 space-y-3">
         {[
-          { icon: MessageCircle, label: "WhatsApp", value: "(11) 99999-0000" },
-          { icon: Phone, label: "Telefone", value: "(11) 3000-0000" },
-          { icon: Mail, label: "E-mail", value: "contato@coragemdeamar.org" },
-          { icon: MapPin, label: "Endereço", value: "Rua da Esperança, 100 — Centro" },
-        ].map(({ icon: Icon, label, value }) => (
+          phone && { icon: Phone, label: "Telefone", value: phone },
+          address && { icon: MapPin, label: "Endereço", value: address },
+        ].filter(Boolean).map((item) => {
+          const { icon: Icon, label, value } = item as { icon: typeof Phone; label: string; value: string };
+          return (
           <div
             key={label}
             className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
