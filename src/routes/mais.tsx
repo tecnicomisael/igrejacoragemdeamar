@@ -104,7 +104,7 @@ function Mais() {
       </section>
 
       <p className="mt-8 text-center text-[11px] text-muted-foreground">
-        Igreja Coragem de Amar • v1.0
+        {t("mais", "footer")}
       </p>
     </AppShell>
   );
