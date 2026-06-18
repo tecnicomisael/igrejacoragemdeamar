@@ -18,15 +18,15 @@ function escapeHtml(s: string) {
 
 async function sendApprovalEmail(args: {
   toList: string[];
-  fromEmail: string;
   applicantEmail: string;
   fullName: string;
   role: "pastor" | "midia";
   approveUrl: string;
   rejectUrl: string;
 }) {
-  const apiKey = process.env.SENDGRID_API_KEY;
-  if (!apiKey) throw new Error("SENDGRID_API_KEY ausente");
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const gmailKey = process.env.GOOGLE_MAIL_API_KEY;
+  if (!lovableKey || !gmailKey) throw new Error("Conector Gmail não configurado");
 
   const roleLabel = args.role === "pastor" ? "Pastor" : "Mídia";
   const html = `
@@ -46,23 +46,40 @@ async function sendApprovalEmail(args: {
     </div>
   `;
 
-  const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
+  const subject = `Nova solicitação de acesso administrativo — ${args.fullName}`;
+  const encodedSubject = `=?UTF-8?B?${Buffer.from(subject, "utf-8").toString("base64")}?=`;
+
+  const rfc2822 = [
+    `To: ${args.toList.join(", ")}`,
+    `Subject: ${encodedSubject}`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/html; charset="UTF-8"',
+    "",
+    html,
+  ].join("\r\n");
+
+  const raw = Buffer.from(rfc2822, "utf-8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  const res = await fetch(
+    "https://connector-gateway.lovable.dev/google_mail/gmail/v1/users/me/messages/send",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": gmailKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ raw }),
     },
-    body: JSON.stringify({
-      personalizations: [{ to: args.toList.map((email) => ({ email })) }],
-      from: { email: args.fromEmail, name: "Igreja Coragem de Amar" },
-      subject: `Nova solicitação de acesso administrativo — ${args.fullName}`,
-      content: [{ type: "text/html", value: html }],
-    }),
-  });
+  );
 
   if (!res.ok) {
     const text = await res.text();
-    console.error("[SendGrid] erro:", res.status, text);
+    console.error("[Gmail] erro:", res.status, text);
     throw new Error(`Falha ao enviar e-mail (${res.status})`);
   }
 }
@@ -83,7 +100,6 @@ export const requestAdminAccess = createServerFn({ method: "POST" })
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Already approved?
     const { data: existingRole } = await supabaseAdmin
       .from("user_roles")
       .select("id")
@@ -92,7 +108,6 @@ export const requestAdminAccess = createServerFn({ method: "POST" })
       .maybeSingle();
     if (existingRole) return { ok: true, status: "already_approved" as const };
 
-    // Upsert request
     const { data: req, error } = await supabaseAdmin
       .from("admin_signup_requests")
       .upsert(
@@ -120,12 +135,8 @@ export const requestAdminAccess = createServerFn({ method: "POST" })
     const approveUrl = `${baseUrl}/api/public/approve-admin?token=${req.approval_token}&action=approve`;
     const rejectUrl = `${baseUrl}/api/public/approve-admin?token=${req.approval_token}&action=reject`;
 
-    const fromEmail = process.env.SENDGRID_FROM_EMAIL;
-    if (!fromEmail) throw new Error("SENDGRID_FROM_EMAIL ausente");
-
     await sendApprovalEmail({
       toList: APPROVERS,
-      fromEmail,
       applicantEmail: email,
       fullName: data.fullName,
       role: data.role,
