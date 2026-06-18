@@ -16,8 +16,12 @@ import { Route as ContribuirRouteImport } from './routes/contribuir'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CelulasRouteImport } from './routes/celulas'
 import { Route as BibliaRouteImport } from './routes/biblia'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AgendaRouteImport } from './routes/agenda'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiPublicApproveAdminRouteImport } from './routes/api/public/approve-admin'
 
 const SermoesRoute = SermoesRouteImport.update({
   id: '/sermoes',
@@ -54,9 +58,18 @@ const BibliaRoute = BibliaRouteImport.update({
   path: '/biblia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AgendaRoute = AgendaRouteImport.update({
   id: '/agenda',
   path: '/agenda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -64,10 +77,21 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicApproveAdminRoute = ApiPublicApproveAdminRouteImport.update({
+  id: '/api/public/approve-admin',
+  path: '/api/public/approve-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/auth': typeof AuthRoute
   '/biblia': typeof BibliaRoute
   '/celulas': typeof CelulasRoute
   '/contato': typeof ContatoRoute
@@ -75,10 +99,13 @@ export interface FileRoutesByFullPath {
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
   '/sermoes': typeof SermoesRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/public/approve-admin': typeof ApiPublicApproveAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agenda': typeof AgendaRoute
+  '/auth': typeof AuthRoute
   '/biblia': typeof BibliaRoute
   '/celulas': typeof CelulasRoute
   '/contato': typeof ContatoRoute
@@ -86,11 +113,15 @@ export interface FileRoutesByTo {
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
   '/sermoes': typeof SermoesRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/api/public/approve-admin': typeof ApiPublicApproveAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/agenda': typeof AgendaRoute
+  '/auth': typeof AuthRoute
   '/biblia': typeof BibliaRoute
   '/celulas': typeof CelulasRoute
   '/contato': typeof ContatoRoute
@@ -98,12 +129,15 @@ export interface FileRoutesById {
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
   '/sermoes': typeof SermoesRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/api/public/approve-admin': typeof ApiPublicApproveAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/agenda'
+    | '/auth'
     | '/biblia'
     | '/celulas'
     | '/contato'
@@ -111,10 +145,13 @@ export interface FileRouteTypes {
     | '/mais'
     | '/oracao'
     | '/sermoes'
+    | '/admin'
+    | '/api/public/approve-admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/agenda'
+    | '/auth'
     | '/biblia'
     | '/celulas'
     | '/contato'
@@ -122,10 +159,14 @@ export interface FileRouteTypes {
     | '/mais'
     | '/oracao'
     | '/sermoes'
+    | '/admin'
+    | '/api/public/approve-admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/agenda'
+    | '/auth'
     | '/biblia'
     | '/celulas'
     | '/contato'
@@ -133,11 +174,15 @@ export interface FileRouteTypes {
     | '/mais'
     | '/oracao'
     | '/sermoes'
+    | '/_authenticated/admin'
+    | '/api/public/approve-admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AgendaRoute: typeof AgendaRoute
+  AuthRoute: typeof AuthRoute
   BibliaRoute: typeof BibliaRoute
   CelulasRoute: typeof CelulasRoute
   ContatoRoute: typeof ContatoRoute
@@ -145,6 +190,7 @@ export interface RootRouteChildren {
   MaisRoute: typeof MaisRoute
   OracaoRoute: typeof OracaoRoute
   SermoesRoute: typeof SermoesRoute
+  ApiPublicApproveAdminRoute: typeof ApiPublicApproveAdminRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -198,11 +244,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BibliaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/agenda': {
       id: '/agenda'
       path: '/agenda'
       fullPath: '/agenda'
       preLoaderRoute: typeof AgendaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -212,12 +272,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/approve-admin': {
+      id: '/api/public/approve-admin'
+      path: '/api/public/approve-admin'
+      fullPath: '/api/public/approve-admin'
+      preLoaderRoute: typeof ApiPublicApproveAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AgendaRoute: AgendaRoute,
+  AuthRoute: AuthRoute,
   BibliaRoute: BibliaRoute,
   CelulasRoute: CelulasRoute,
   ContatoRoute: ContatoRoute,
@@ -225,6 +312,7 @@ const rootRouteChildren: RootRouteChildren = {
   MaisRoute: MaisRoute,
   OracaoRoute: OracaoRoute,
   SermoesRoute: SermoesRoute,
+  ApiPublicApproveAdminRoute: ApiPublicApproveAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

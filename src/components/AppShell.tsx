@@ -1,7 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Calendar, Heart, BookOpen, Menu } from "lucide-react";
-import type { ReactNode } from "react";
+import { Home, Calendar, Heart, BookOpen, Menu, ShieldCheck } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 import logo from "@/assets/logo-coragem.png.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 const tabs = [
   { to: "/", label: "Início", icon: Home },
@@ -13,6 +14,31 @@ const tabs = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const check = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!active) return;
+      if (!data.user) {
+        setIsAdmin(false);
+        return;
+      }
+      const { data: role } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      if (active) setIsAdmin(!!role);
+    };
+    check();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => check());
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-night flex flex-col">
@@ -25,6 +51,14 @@ export function AppShell({ children }: { children: ReactNode }) {
               <div className="font-display text-base text-foreground">Coragem de Amar</div>
             </div>
           </Link>
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="inline-flex items-center gap-1 rounded-full bg-gold/15 text-gold px-2.5 py-1 text-[11px] font-semibold"
+            >
+              <ShieldCheck className="h-3 w-3" /> Admin
+            </Link>
+          )}
         </div>
       </header>
 
