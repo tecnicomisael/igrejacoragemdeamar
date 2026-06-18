@@ -18,6 +18,18 @@ export const Route = createFileRoute("/auth")({
 
 type Mode = "login" | "signup";
 
+async function withTimeout<T>(promise: PromiseLike<T>, ms = 6000): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error("Tempo limite da conexão")), ms);
+  });
+  try {
+    return await Promise.race([Promise.resolve(promise), timeout]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const router = useRouter();
@@ -35,16 +47,16 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   const refresh = async () => {
-    const { data } = await supabase.auth.getSession();
-    if (!data.session?.user) {
-      setSignedIn(false);
-      setStatus(null);
-      setChecking(false);
-      return;
-    }
-    setSignedIn(true);
+    setChecking(true);
     try {
-      const s = await getMyAdminStatus();
+      const { data } = await withTimeout(supabase.auth.getSession(), 4000);
+      if (!data.session?.user) {
+        setSignedIn(false);
+        setStatus(null);
+        return;
+      }
+      setSignedIn(true);
+      const s = await withTimeout(getMyAdminStatus(), 6000);
       setStatus(s);
       if (s.isAdmin) {
         await router.invalidate();
@@ -52,6 +64,9 @@ function AuthPage() {
       }
     } catch (e) {
       console.error(e);
+      setSignedIn(false);
+      setStatus(null);
+      setError("Não foi possível verificar a sessão agora. Tente entrar novamente.");
     } finally {
       setChecking(false);
     }
