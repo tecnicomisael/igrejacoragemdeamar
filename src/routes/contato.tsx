@@ -64,19 +64,20 @@ function Contato() {
         ].filter(Boolean).map((item) => {
           const { icon: Icon, label, value } = item as { icon: typeof Phone; label: string; value: string };
           return (
-          <div
-            key={label}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
-          >
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-gold text-primary-foreground shadow-gold">
-              <Icon className="h-5 w-5" />
-            </span>
-            <div>
-              <div className="text-xs text-muted-foreground">{label}</div>
-              <div className="font-medium">{value}</div>
+            <div
+              key={label}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
+            >
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-gold text-primary-foreground shadow-gold">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div>
+                <div className="text-xs text-muted-foreground">{label}</div>
+                <div className="font-medium">{value}</div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="px-5 mt-6">
