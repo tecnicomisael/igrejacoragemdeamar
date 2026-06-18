@@ -30,6 +30,7 @@ function AuthPage() {
     requestStatus: string | null;
     fullName: string | null;
   } | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
