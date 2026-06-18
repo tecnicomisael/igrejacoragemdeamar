@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { useSiteContent } from "@/lib/use-content";
-import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+import { Phone, MapPin, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contato")({
