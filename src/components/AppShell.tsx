@@ -19,16 +19,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     let active = true;
     const check = async () => {
-      const { data } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getSession();
       if (!active) return;
-      if (!data.user) {
+      const user = data.session?.user;
+      if (!user) {
         setIsAdmin(false);
         return;
       }
       const { data: role } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", data.user.id)
+        .eq("user_id", user.id)
         .maybeSingle();
       if (active) setIsAdmin(!!role);
     };
