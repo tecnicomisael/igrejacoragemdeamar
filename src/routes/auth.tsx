@@ -89,12 +89,13 @@ function AuthPage() {
       email: String(fd.get("email")),
       password: String(fd.get("password")),
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       setError("E-mail ou senha incorretos.");
       return;
     }
-    await refresh();
+    // Navega direto; o gate de _authenticated valida a sessão.
+    window.location.assign("/admin");
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
