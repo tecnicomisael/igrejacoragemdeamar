@@ -16,7 +16,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Mode = "login" | "signup";
+type Mode = "login" | "signup" | "forgot";
 
 async function withTimeout<T>(promise: PromiseLike<T>, ms = 6000): Promise<T> {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -158,6 +158,30 @@ function AuthPage() {
     }
   };
 
+  const handleForgot = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setNotice(null);
+    const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email")).trim();
+    if (!email) {
+      setError("Informe seu e-mail.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    setNotice(
+      "Se este e-mail estiver cadastrado, enviamos um link para redefinir a senha. Verifique sua caixa de entrada e o spam.",
+    );
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setSignedIn(false);
@@ -204,10 +228,12 @@ function AuthPage() {
       <section className="px-5 pt-6">
         <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Acesso restrito</p>
         <h1 className="mt-1 font-display text-3xl">
-          {mode === "login" ? "Entrar" : "Solicitar acesso"}
+          {mode === "login" ? "Entrar" : mode === "signup" ? "Solicitar acesso" : "Recuperar senha"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Apenas pastores e equipe de mídia. Novos cadastros passam por aprovação por e-mail.
+          {mode === "forgot"
+            ? "Informe seu e-mail cadastrado. Enviaremos um link para você criar uma nova senha."
+            : "Apenas pastores e equipe de mídia. Novos cadastros passam por aprovação por e-mail."}
         </p>
       </section>
 
@@ -265,6 +291,49 @@ function AuthPage() {
             >
               {loading ? "Entrando…" : "Entrar"}
             </button>
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("forgot");
+                  setError(null);
+                  setNotice(null);
+                }}
+                className="text-xs text-gold hover:underline"
+              >
+                Esqueci minha senha
+              </button>
+            </div>
+          </form>
+        ) : mode === "forgot" ? (
+          <form onSubmit={handleForgot} className="rounded-2xl border border-border bg-card p-4 space-y-3">
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="E-mail cadastrado"
+              className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm outline-none focus:border-gold"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-full bg-gradient-gold py-3 text-sm font-semibold text-primary-foreground shadow-gold disabled:opacity-60"
+            >
+              {loading ? "Enviando…" : "Enviar link de redefinição"}
+            </button>
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("login");
+                  setError(null);
+                  setNotice(null);
+                }}
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                ← Voltar para o login
+              </button>
+            </div>
           </form>
         ) : (
           <form onSubmit={handleSignup} className="rounded-2xl border border-border bg-card p-4 space-y-3">
