@@ -228,10 +228,12 @@ function AuthPage() {
       <section className="px-5 pt-6">
         <p className="text-xs uppercase tracking-[0.25em] text-gold/80">Acesso restrito</p>
         <h1 className="mt-1 font-display text-3xl">
-          {mode === "login" ? "Entrar" : "Solicitar acesso"}
+          {mode === "login" ? "Entrar" : mode === "signup" ? "Solicitar acesso" : "Recuperar senha"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Apenas pastores e equipe de mídia. Novos cadastros passam por aprovação por e-mail.
+          {mode === "forgot"
+            ? "Informe seu e-mail cadastrado. Enviaremos um link para você criar uma nova senha."
+            : "Apenas pastores e equipe de mídia. Novos cadastros passam por aprovação por e-mail."}
         </p>
       </section>
 
