@@ -152,7 +152,12 @@ export const getMyAdminStatus = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const [{ data: role }, { data: req }] = await Promise.all([
-      supabase.from("user_roles").select("role, full_name").eq("user_id", userId).maybeSingle(),
+      supabase
+        .from("user_roles")
+        .select("role, full_name")
+        .eq("user_id", userId)
+        .limit(1)
+        .maybeSingle(),
       supabase
         .from("admin_signup_requests")
         .select("status, requested_role, full_name")
