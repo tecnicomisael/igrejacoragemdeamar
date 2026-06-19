@@ -16,7 +16,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Mode = "login" | "signup";
+type Mode = "login" | "signup" | "forgot";
 
 async function withTimeout<T>(promise: PromiseLike<T>, ms = 6000): Promise<T> {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
