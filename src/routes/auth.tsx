@@ -291,6 +291,49 @@ function AuthPage() {
             >
               {loading ? "Entrando…" : "Entrar"}
             </button>
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("forgot");
+                  setError(null);
+                  setNotice(null);
+                }}
+                className="text-xs text-gold hover:underline"
+              >
+                Esqueci minha senha
+              </button>
+            </div>
+          </form>
+        ) : mode === "forgot" ? (
+          <form onSubmit={handleForgot} className="rounded-2xl border border-border bg-card p-4 space-y-3">
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="E-mail cadastrado"
+              className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm outline-none focus:border-gold"
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-full bg-gradient-gold py-3 text-sm font-semibold text-primary-foreground shadow-gold disabled:opacity-60"
+            >
+              {loading ? "Enviando…" : "Enviar link de redefinição"}
+            </button>
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("login");
+                  setError(null);
+                  setNotice(null);
+                }}
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                ← Voltar para o login
+              </button>
+            </div>
           </form>
         ) : (
           <form onSubmit={handleSignup} className="rounded-2xl border border-border bg-card p-4 space-y-3">
