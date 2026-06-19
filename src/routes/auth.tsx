@@ -59,8 +59,10 @@ function AuthPage() {
       const s = await withTimeout(getMyAdminStatus(), 6000);
       setStatus(s);
       if (s.isAdmin) {
-        await router.invalidate();
-        navigate({ to: "/" });
+        setChecking(false);
+        await navigate({ to: "/admin" });
+        router.invalidate().catch(() => {});
+        return;
       }
     } catch (e) {
       console.error(e);
