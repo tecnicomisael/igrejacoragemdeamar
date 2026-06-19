@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SermoesRouteImport } from './routes/sermoes'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OracaoRouteImport } from './routes/oracao'
 import { Route as MaisRouteImport } from './routes/mais'
 import { Route as ContribuirRouteImport } from './routes/contribuir'
@@ -27,6 +28,11 @@ import { Route as AuthenticatedAdminConteudoRouteImport } from './routes/_authen
 const SermoesRoute = SermoesRouteImport.update({
   id: '/sermoes',
   path: '/sermoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OracaoRoute = OracaoRouteImport.update({
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/contribuir': typeof ContribuirRoute
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermoes': typeof SermoesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/conteudo': typeof AuthenticatedAdminConteudoRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/contribuir': typeof ContribuirRoute
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermoes': typeof SermoesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/conteudo': typeof AuthenticatedAdminConteudoRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/contribuir': typeof ContribuirRoute
   '/mais': typeof MaisRoute
   '/oracao': typeof OracaoRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sermoes': typeof SermoesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/admin/conteudo': typeof AuthenticatedAdminConteudoRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/contribuir'
     | '/mais'
     | '/oracao'
+    | '/reset-password'
     | '/sermoes'
     | '/admin'
     | '/admin/conteudo'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/contribuir'
     | '/mais'
     | '/oracao'
+    | '/reset-password'
     | '/sermoes'
     | '/admin'
     | '/admin/conteudo'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/contribuir'
     | '/mais'
     | '/oracao'
+    | '/reset-password'
     | '/sermoes'
     | '/_authenticated/admin'
     | '/_authenticated/admin/conteudo'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   ContribuirRoute: typeof ContribuirRoute
   MaisRoute: typeof MaisRoute
   OracaoRoute: typeof OracaoRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SermoesRoute: typeof SermoesRoute
   ApiPublicApproveAdminRoute: typeof ApiPublicApproveAdminRoute
 }
@@ -213,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/sermoes'
       fullPath: '/sermoes'
       preLoaderRoute: typeof SermoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/oracao': {
@@ -342,6 +362,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContribuirRoute: ContribuirRoute,
   MaisRoute: MaisRoute,
   OracaoRoute: OracaoRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SermoesRoute: SermoesRoute,
   ApiPublicApproveAdminRoute: ApiPublicApproveAdminRoute,
 }
