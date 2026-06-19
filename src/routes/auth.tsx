@@ -158,6 +158,30 @@ function AuthPage() {
     }
   };
 
+  const handleForgot = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setNotice(null);
+    const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email")).trim();
+    if (!email) {
+      setError("Informe seu e-mail.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      setError(error.message);
+      return;
+    }
+    setNotice(
+      "Se este e-mail estiver cadastrado, enviamos um link para redefinir a senha. Verifique sua caixa de entrada e o spam.",
+    );
+  };
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setSignedIn(false);
